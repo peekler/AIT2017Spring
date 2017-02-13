@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AITTime</string>
+    <string name="btn_time">Show time</string>
+    <string name="txt_date">"Date is: "</string>
+
+    <string name="txt_date_message">Hi %1$s, the time is: %2$s</string>
+</resources>
