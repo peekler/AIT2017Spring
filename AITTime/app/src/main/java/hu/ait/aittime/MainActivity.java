@@ -3,6 +3,7 @@ package hu.ait.aittime;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    public static final String MAIN_TAG = "MAIN_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.d(MAIN_TAG,"onClick called");
+
                 String user = etName.getText().toString();
 
                 //String time = getString(R.string.txt_date_message,
