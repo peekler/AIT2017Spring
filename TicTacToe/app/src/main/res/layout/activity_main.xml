@@ -13,12 +13,28 @@
 
     <hu.ait.tictactoe.view.TicTacToeView
         android:id="@+id/gameView"
-        android:layout_width="200dp"
-        android:layout_height="200dp" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnClear"
         android:text="Clear board" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tvData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:text="Touch the game area to play"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
 </LinearLayout>
