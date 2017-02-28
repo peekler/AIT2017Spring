@@ -2,6 +2,8 @@ package hu.ait.tictactoe.view;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.ait.tictactoe.MainActivity;
+import hu.ait.tictactoe.R;
 import hu.ait.tictactoe.model.TicTacToeModel;
 
 public class TicTacToeView extends View {
@@ -21,10 +24,12 @@ public class TicTacToeView extends View {
     private Paint paintBg;
     private Paint paintLine;
 
+    private Paint paintText;
+
+    private Bitmap bitmapBg;
 
     public TicTacToeView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
 
         paintBg = new Paint();
         paintBg.setColor(Color.BLACK);
@@ -35,8 +40,21 @@ public class TicTacToeView extends View {
         paintLine.setStyle(Paint.Style.STROKE);
         paintLine.setStrokeWidth(5);
 
+        paintText = new Paint();
+        paintText.setColor(Color.RED);
 
 
+
+        bitmapBg = BitmapFactory.decodeResource(getResources(),R.drawable.grass_background);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        bitmapBg = Bitmap.createScaledBitmap(bitmapBg, getWidth(), getHeight(), false);
+
+        paintText.setTextSize(getHeight()/3);
     }
 
     @Override
@@ -45,6 +63,14 @@ public class TicTacToeView extends View {
 
         canvas.drawRect(0, 0, getWidth(), getHeight(),
                 paintBg);
+
+        canvas.drawBitmap(
+                bitmapBg,
+                0,0,
+                null);
+
+        canvas.drawText("6", 0, getHeight()/3, paintText);
+
         drawGameGrid(canvas);
 
         drawPlayers(canvas);
@@ -111,7 +137,7 @@ public class TicTacToeView extends View {
                 }
 
                 ((MainActivity)getContext()).setMessage(
-                        "Next is: " + next
+                        getResources().getString(R.string.next_player,next)
                 );
             }
         }
