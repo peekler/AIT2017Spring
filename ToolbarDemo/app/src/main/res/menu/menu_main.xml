@@ -6,7 +6,7 @@
     <item
         android:title="Help"
         app:showAsAction="always|withText"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_action_armchair"
         android:id="@+id/action_help"/>
 
     <item
