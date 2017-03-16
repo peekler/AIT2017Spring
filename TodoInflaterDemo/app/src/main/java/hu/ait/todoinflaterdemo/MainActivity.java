@@ -30,12 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSave)
     public void savePressed(Button btn) {
-        View viewTodo =
+        final View viewTodo =
                 getLayoutInflater().inflate(R.layout.layout_todo, null);
 
         TextView tvTodo = (TextView) viewTodo.findViewById(R.id.tvTodo);
         tvTodo.setText(etTodo.getText().toString());
 
-        layoutContent.addView(viewTodo);
+        Button btnDel = (Button) viewTodo.findViewById(R.id.btnDelete);
+        btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutContent.removeView(viewTodo);
+            }
+        });
+
+        layoutContent.addView(viewTodo,0);
     }
 }
