@@ -1,13 +1,18 @@
 package hu.ait.recylerviewdemo.data;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Peter on 2017. 03. 20..
  */
 
-public class Todo {
+public class Todo extends RealmObject {
 
     private String todoText;
     private boolean done;
+
+
+    public Todo() {}
 
     public Todo(String todoText, boolean done) {
         this.todoText = todoText;

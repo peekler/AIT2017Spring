@@ -15,6 +15,8 @@ import java.util.List;
 import hu.ait.recylerviewdemo.R;
 import hu.ait.recylerviewdemo.data.Todo;
 import hu.ait.recylerviewdemo.touch.TodoTouchHelperAdapter;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class TodoRecyclerAdapter
@@ -22,16 +24,23 @@ public class TodoRecyclerAdapter
         implements TodoTouchHelperAdapter {
 
     private List<Todo> todoList;
-
     private Context context;
+
+    private Realm realmTodo;
+
 
     public TodoRecyclerAdapter(Context context) {
         this.context = context;
 
+        realmTodo = Realm.getDefaultInstance();
+
+        RealmResults<Todo> todoResult =
+                realmTodo.where(Todo.class).findAll();
+
         todoList = new ArrayList<Todo>();
 
-        for (int i = 0; i < 20; i++) {
-            todoList.add(new Todo("Todo "+i, false));
+        for (int i = 0; i < todoResult.size(); i++) {
+            todoList.add(todoResult.get(i));
         }
     }
 
@@ -51,7 +60,9 @@ public class TodoRecyclerAdapter
         holder.cbDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                realmTodo.beginTransaction();
                 todoList.get(holder.getAdapterPosition()).setDone(holder.cbDone.isChecked());
+                realmTodo.commitTransaction();
             }
         });
     }
@@ -63,6 +74,11 @@ public class TodoRecyclerAdapter
 
     @Override
     public void onItemDismiss(int position) {
+        realmTodo.beginTransaction();
+        todoList.get(position).deleteFromRealm();
+        realmTodo.commitTransaction();
+
+
         todoList.remove(position);
 
         // refreshes the whole list
@@ -90,8 +106,14 @@ public class TodoRecyclerAdapter
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void addTodo(Todo todo) {
-        todoList.add(0, todo);
+    public void addTodo(String todoTitle) {
+        realmTodo.beginTransaction();
+        Todo newTodo = realmTodo.createObject(Todo.class);
+        newTodo.setTodoText(todoTitle);
+        newTodo.setDone(false);
+        realmTodo.commitTransaction();
+
+        todoList.add(0, newTodo);
         notifyItemInserted(0);
     }
 
@@ -106,5 +128,10 @@ public class TodoRecyclerAdapter
             cbDone = (CheckBox) itemView.findViewById(R.id.cbDone);
             tvTodo = (TextView) itemView.findViewById(R.id.tvTodo);
         }
+    }
+
+
+    public void closeRealm() {
+        realmTodo.close();
     }
 }
