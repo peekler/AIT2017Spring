@@ -1,12 +1,16 @@
 package hu.ait.recylerviewdemo.data;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Peter on 2017. 03. 20..
  */
 
 public class Todo extends RealmObject {
+
+    @PrimaryKey
+    private String todoID;
 
     private String todoText;
     private boolean done;
@@ -33,5 +37,9 @@ public class Todo extends RealmObject {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getTodoID() {
+        return todoID;
     }
 }

@@ -11,12 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import hu.ait.recylerviewdemo.MainActivity;
 import hu.ait.recylerviewdemo.R;
 import hu.ait.recylerviewdemo.data.Todo;
 import hu.ait.recylerviewdemo.touch.TodoTouchHelperAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 
 public class TodoRecyclerAdapter
@@ -29,13 +32,14 @@ public class TodoRecyclerAdapter
     private Realm realmTodo;
 
 
-    public TodoRecyclerAdapter(Context context) {
+    public TodoRecyclerAdapter(Context context, Realm realmTodo) {
         this.context = context;
 
-        realmTodo = Realm.getDefaultInstance();
+        this.realmTodo = realmTodo;
 
         RealmResults<Todo> todoResult =
-                realmTodo.where(Todo.class).findAll();
+                realmTodo.where(Todo.class).findAll().sort("todoText",
+                        Sort.ASCENDING);
 
         todoList = new ArrayList<Todo>();
 
@@ -63,6 +67,15 @@ public class TodoRecyclerAdapter
                 realmTodo.beginTransaction();
                 todoList.get(holder.getAdapterPosition()).setDone(holder.cbDone.isChecked());
                 realmTodo.commitTransaction();
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)context).openEditActivity(holder.getAdapterPosition(),
+                        todoList.get(holder.getAdapterPosition()).getTodoID()
+                        );
             }
         });
     }
@@ -108,13 +121,24 @@ public class TodoRecyclerAdapter
 
     public void addTodo(String todoTitle) {
         realmTodo.beginTransaction();
-        Todo newTodo = realmTodo.createObject(Todo.class);
+        Todo newTodo = realmTodo.createObject(Todo.class, UUID.randomUUID().toString());
         newTodo.setTodoText(todoTitle);
         newTodo.setDone(false);
+
         realmTodo.commitTransaction();
 
         todoList.add(0, newTodo);
         notifyItemInserted(0);
+    }
+
+    public void updateTodo(String todoID, int positionToEdit) {
+        Todo todo = realmTodo.where(Todo.class)
+                .equalTo("todoID", todoID)
+                .findFirst();
+
+        todoList.set(positionToEdit, todo);
+
+        notifyItemChanged(positionToEdit);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -131,7 +155,5 @@ public class TodoRecyclerAdapter
     }
 
 
-    public void closeRealm() {
-        realmTodo.close();
-    }
+
 }

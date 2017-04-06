@@ -1,6 +1,7 @@
 package hu.ait.recylerviewdemo;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import hu.ait.recylerviewdemo.adapter.TodoRecyclerAdapter;
 import hu.ait.recylerviewdemo.data.Todo;
@@ -21,13 +23,19 @@ import hu.ait.recylerviewdemo.touch.TodoItemTouchHelperCallback;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String KEY_TODO_ID = "KEY_TODO_ID";
+    public static final int REQUEST_CODE_EDIT = 101;
     private TodoRecyclerAdapter todoRecyclerAdapter;
     private RecyclerView recyclerTodo;
+
+    private int positionToEdit = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((MainApplication)getApplication()).openRealm();
 
 
         setupUI();
@@ -46,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerTodo.setLayoutManager(layoutManager);
 
-        todoRecyclerAdapter = new TodoRecyclerAdapter(this);
+        todoRecyclerAdapter = new TodoRecyclerAdapter(this,
+                ((MainApplication)getApplication()).getRealmTodo());
         recyclerTodo.setAdapter(todoRecyclerAdapter);
 
         // adding touch support
@@ -124,6 +133,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        todoRecyclerAdapter.closeRealm();
+        ((MainApplication)getApplication()).closeRealm();
+    }
+
+    public void openEditActivity(int index, String todoID) {
+        positionToEdit = index;
+
+        Intent startEdit = new Intent(this, EditTodoActivity.class);
+
+        startEdit.putExtra(KEY_TODO_ID, todoID);
+
+        startActivityForResult(startEdit, REQUEST_CODE_EDIT);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == REQUEST_CODE_EDIT) {
+                    String todoID  = data.getStringExtra(
+                            EditTodoActivity.KEY_TODO);
+
+                    todoRecyclerAdapter.updateTodo(todoID, positionToEdit);
+                }
+                break;
+            case RESULT_CANCELED:
+                Toast.makeText(MainActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
