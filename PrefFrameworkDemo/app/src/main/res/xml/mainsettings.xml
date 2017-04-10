@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Main category">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key_autologin"
+            android:title="Auto login" />
+
+        <SwitchPreference
+            android:key="key_enable_service"
+            android:summaryOff="off"
+            android:summaryOn="on"
+            android:title="Enable service" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Almost main cat">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_else"
+            android:title="Auto something" />
+    </PreferenceCategory>
+</PreferenceScreen>
