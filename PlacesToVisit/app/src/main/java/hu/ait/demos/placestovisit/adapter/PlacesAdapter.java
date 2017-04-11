@@ -70,7 +70,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) context).showEditPlaceActivity(placesList.get(viewHolder.getAdapterPosition()).getPlaceID(), position);
+                ((MainActivity) context).showEditPlaceActivity(
+                        placesList.get(viewHolder.getAdapterPosition()).getPlaceID(),
+                        viewHolder.getAdapterPosition());
             }
         });
 
