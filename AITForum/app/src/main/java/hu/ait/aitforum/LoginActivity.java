@@ -1,11 +1,13 @@
 package hu.ait.aitforum;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,14 +23,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
     EditText etPassword;
 
-    private ProgressDialog progressDialog;
+
     private FirebaseAuth firebaseAuth;
 
 
@@ -85,21 +87,36 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    public void showProgressDialog() {
-        if (progressDialog  == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Wait for it...");
+    @OnClick(R.id.btnLogin)
+    public void loginClick() {
+        if (!isFormValid()) {
+            return;
         }
 
-        progressDialog.show();
+        showProgressDialog();
+
+        firebaseAuth.signInWithEmailAndPassword(
+                etEmail.getText().toString(),
+                etPassword.getText().toString()
+        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                hideProgressDialog();
+
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginActivity.this, "Login ok", Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(LoginActivity.this, PostsActivity.class));
+                } else {
+                    Toast.makeText(LoginActivity.this, "Failed: "+task.getException().getLocalizedMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    public void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.hide();
-        }
-    }
+
+
 
     private boolean isFormValid() {
         if (TextUtils.isEmpty(etEmail.getText().toString())) {
