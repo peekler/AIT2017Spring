@@ -5,6 +5,7 @@ public class Post {
     private String author;
     private String title;
     private String body;
+    private String imageUrl;
 
     public Post(){
     }
@@ -47,5 +48,13 @@ public class Post {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -89,6 +89,9 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btnLogin)
     public void loginClick() {
+        //int a = 6/0;
+        //Toast.makeText(this, "Math result: "+a, Toast.LENGTH_SHORT).show();
+
         if (!isFormValid()) {
             return;
         }

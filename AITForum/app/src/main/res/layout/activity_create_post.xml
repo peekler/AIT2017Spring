@@ -27,6 +27,18 @@
         android:maxLines="10"
         android:scrollHorizontally="false" />
 
+    <ImageView
+        android:id="@+id/imgAttach"
+        android:visibility="gone"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <Button
+        android:id="@+id/btnAttach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attach"/>
+
     <Button
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"

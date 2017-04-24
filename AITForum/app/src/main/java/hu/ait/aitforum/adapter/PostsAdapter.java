@@ -2,13 +2,16 @@ package hu.ait.aitforum.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -55,6 +58,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.tvTitle.setText(tmpPost.getTitle());
         holder.tvBody.setText(tmpPost.getBody());
 
+
+        if (!TextUtils.isEmpty(tmpPost.getImageUrl())) {
+            holder.ivPost.setVisibility(View.VISIBLE);
+            Glide.with(context).load(tmpPost.getImageUrl()).into(holder.ivPost);
+        } else {
+            holder.ivPost.setVisibility(View.GONE);
+        }
+
         setAnimation(holder.itemView, position);
     }
 
@@ -67,12 +78,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public TextView tvAuthor;
         public TextView tvTitle;
         public TextView tvBody;
+        public ImageView ivPost;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvAuthor = (TextView) itemView.findViewById(R.id.tvAuthor);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            ivPost = (ImageView) itemView.findViewById(R.id.ivPost);
         }
     }
 
