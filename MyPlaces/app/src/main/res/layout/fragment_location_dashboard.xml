@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:id="@+id/scroller"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnGeocode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position details"/>
+
+            <include
+                android:id="@+id/fieldProvider"
+                layout="@layout/tile_info" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <include
+                        android:id="@+id/fieldLat"
+                        layout="@layout/tile_info" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <include
+                        android:id="@+id/fieldLng"
+                        layout="@layout/tile_info" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <include
+                        android:id="@+id/fieldSpeed"
+                        layout="@layout/tile_info" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <include
+                        android:id="@+id/fieldAlt"
+                        layout="@layout/tile_info" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include
+                android:id="@+id/fieldPosTime"
+                layout="@layout/tile_info" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
